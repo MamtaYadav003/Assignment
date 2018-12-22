@@ -4,14 +4,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import com.assignment.work.model.Users;
-import com.assignment.work.service.UserService;
+import com.assignment.work.model.Employee;
+import com.assignment.work.service.EmployeeService;
 
 
 @Controller
@@ -19,7 +17,7 @@ public class UserController {
 
 	
 	@Autowired
-	UserService userService;
+	EmployeeService employeeService;
 
 		
 	@RequestMapping("/welcome")
@@ -30,41 +28,41 @@ public class UserController {
 	public ModelAndView firstPage1() {
 		return new ModelAndView("welcome");
 	}
+	@RequestMapping("/403")
+	public ModelAndView Error() {
+		return new ModelAndView("403");
+	}
 	 
-	@RequestMapping(value = "/addNewUser", method = RequestMethod.GET)
+	@RequestMapping(value = "/addNewEmployee", method = RequestMethod.GET)
 	public ModelAndView show() {
-			return new ModelAndView("addUser", "usr", new Users());
+			return new ModelAndView("addEmployee", "emp", new Employee());
 	}
 
-	@RequestMapping(value = "/addNewUser", method = RequestMethod.POST)
-	public ModelAndView processRequest(@ModelAttribute("usr") Users user) {
-
-		userService.insertUser(user);
-		List<Users> usr = userService.getAllUser();
-		ModelAndView model = new ModelAndView("getUser");
-		model.addObject("user", usr);
+	@RequestMapping(value = "/addNewEmployee", method = RequestMethod.POST)
+	public ModelAndView processRequest(@ModelAttribute("emp") Employee empl) {
+        System.out.println("in add new emp");
+		employeeService.insertEmployee(empl);
+		List<Employee> emplo = employeeService.getAllEmployee();
+		ModelAndView model = new ModelAndView("getEmployee");
+		model.addObject("employee", emplo);
 		return model;
 	}
 
-	@RequestMapping("/getUser")
-	public ModelAndView getUser() {
-		List<Users> user = userService.getAllUser();
-		ModelAndView model = new ModelAndView("getUser");
-		model.addObject("user", user);
+	@RequestMapping("/getEmployee")
+	public ModelAndView getEmployee() {
+		List<Employee> emplo = employeeService.getAllEmployee();
+		ModelAndView model = new ModelAndView("getEmployee");
+		model.addObject("employee", emplo);
 		return model;
 	}
 	
-	@RequestMapping(value= "/deleteUser/{id}", method = RequestMethod.DELETE)
-	public ModelAndView deleteStudent(@PathVariable String id) {
-		userService.deleteById(id);
+	@RequestMapping("/deleteEmployee")
+	public ModelAndView deleteEmployee() {
+		employeeService.deleteEmployee();
 		return new ModelAndView("welcome");
 	}
 	
-	@RequestMapping(value= "/deleteUser/{id}", method = RequestMethod.GET)
-	public ModelAndView deleteStudent1(@PathVariable String id) {
-		userService.deleteById(id);
-		return new ModelAndView("welcome");
-	}
+	
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(Model model, String error, String logout) {

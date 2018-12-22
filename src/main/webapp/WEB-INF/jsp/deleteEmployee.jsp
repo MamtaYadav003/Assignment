@@ -8,17 +8,20 @@
 <body>
 	<h3 style="color: red;">Add New Employee</h3>
 
-	<div id="addEmployee">
-		<form:form action="/addNewEmployee" method="post"
+	<div id="deleteEmployee">
+	<c:forEach var="listValue" items="${employee}">
+		<li>${listValue}</li>
+		</c:forEach>
+	
+	
+		<form:form action="${contextPath}/deleteEmployee" method="post"
 			modelAttribute="emp">
+			
 			<p>
-				<label>Enter Employee Id</label>
-				<form:input path="empId" />
+				<label>Enter Employee Name</label>
+				<form:input path="ename" />
 			</p>
-			<p>
-				<label>Enter Name</label>
-				<form:input path="empName" />
-			</p>
+            
 			<input type="SUBMIT" value="Submit" />
 		</form:form>
 	</div>

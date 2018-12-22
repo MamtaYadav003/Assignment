@@ -1,22 +1,33 @@
 package com.assignment.work.model;
 
-public class Users {
+import java.io.Serializable;
 
-	private String Id;
-	private String username;
-	private String password;
-	private boolean enabled;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "users")
+public class Users implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	
-	public String getId() {
-		return Id;
-	}
-
-
-	public void setId(String id) {
-		Id = id;
-	}
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="id")
+	private Long id;
+	
+	@Column(name="username")
+	private String username;
+	
+	@Column(name="password")
+	private String password;
+	
+	@Column(name="enabled")
+	private boolean enabled;
 
 	public String getUsername() {
 		return username;
@@ -50,11 +61,40 @@ public class Users {
 	}
 
 
-	@Override
-	public String toString() {
-		return "Users [Id=" + Id + ", username=" + username + ", password=" + password + ", enabled=" + enabled + "]";
+	public Long getId() {
+		return id;
 	}
 
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Users [id=" + id + ", username=" + username + ", password=" + password + ", enabled=" + enabled + "]";
+	}
 	
+	public Users() {
+		super();
+	}
+
+	public Users(Long id, String username, String password, boolean enabled) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.enabled = enabled;
+	}
+
+
+	public Users(String username, String password, boolean enabled) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.enabled = enabled;
+	}
+
+
 }

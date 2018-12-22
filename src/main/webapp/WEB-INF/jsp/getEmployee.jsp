@@ -2,14 +2,14 @@
 <%@page session="false"%>
 <html>
 <head>
-<title>Show Users</title>
+<title>Show Employees</title>
 </head>
 <body>
 	<jsp:include page="menu.jsp" />
 	      
-	<h3 style="color: red;">Show All Users</h3>
+	<h3 style="color: red;">Show All Employee</h3>
 	<ul>
-		<c:forEach var="listValue" items="${user}">
+		<c:forEach var="listValue" items="${employee}">
 			<li>${listValue}</li>
 		</c:forEach>
 	</ul>

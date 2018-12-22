@@ -30,28 +30,33 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao{
 	@Override
 	public void insertUser(Users usr) {
 		String sql = "INSERT INTO users " +
-				"(Id, username, password, enabled) VALUES (?, ?, ?, ?)" ;
+				"(id, username, password, enabled) VALUES (?, ?, ?, ?)" ;
 		getJdbcTemplate().update(sql, new Object[]{
 				usr.getId(), usr.getUsername(), usr.getPassword(), usr.isEnabled()
 		});
+		
 	}
 	
 	@Override
 	public void insertUsers(final List<Users> user) {
+		
 		String sql = "INSERT INTO users " + "(Id, username, password, enabled) VALUES (?, ?, ?, ?)";
+		
 		getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				Users usr = user.get(i);
-				ps.setString(1, usr.getId());
+				ps.setLong(1, usr.getId());
 				ps.setString(2, usr.getUsername());
 				ps.setString(3, usr.getPassword());
 				ps.setBoolean(4, usr.isEnabled());
 			}
 			
+			
 			public int getBatchSize() {
 				return user.size();
 			}
 		});
+		
 
 	}
 	@Override
@@ -62,7 +67,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao{
 		List<Users> result = new ArrayList<Users>();
 		for(Map<String, Object> row:rows){
 			Users usr = new Users();
-			usr.setId((String)row.get("Id"));
+			usr.setId((Long) row.get("Id"));
 			usr.setPassword((String)row.get("password"));
 			usr.setUsername((String)row.get("username"));
 			usr.setEnabled((boolean)row.get("enabled"));
@@ -79,7 +84,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao{
 			@Override
 			public Users mapRow(ResultSet rs, int rwNumber) throws SQLException {
 				Users usr = new Users();
-				usr.setId(rs.getString("Id"));
+				usr.setId(rs.getLong("Id"));
 				usr.setUsername(rs.getString("username"));
 				usr.setPassword(rs.getString("password"));
 				usr.setEnabled(rs.getBoolean("enabled"));
@@ -89,7 +94,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao{
 	}
 	
 	@Override
-	public void deleteById(String Id) {
+	public void deleteById(long Id) {
 		System.out.println("I am in delete DAO");
 		String sql = "delete * from users,authorities WHERE Id = ?";
 		getJdbcTemplate().update(sql);
